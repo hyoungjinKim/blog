@@ -1,5 +1,7 @@
 import app from "./app";
-
-app.listen("7000", () => {
-  console.log("open server port 7000");
+import config from "./config/index";
+const { PORT } = config;
+console.log(PORT);
+app.listen(PORT, () => {
+  console.log(`open server ${PORT}`);
 });

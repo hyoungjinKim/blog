@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
   },
   register_date: {
     type: Date,
-    default: moment().format("YYYY_MM_DD hh:mm"),
+    default: moment().format("YYYY-MM-DD hh:mm"),
   },
   comments: [
     {
