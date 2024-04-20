@@ -4,6 +4,7 @@ const { JWT_SECRET } = config;
 
 const auth = (req, res, next) => {
   const token = req.header("x-auth-token");
+  console.log(token);
   if (!token) {
     return res.status(401).json({ msg: "토큰 없음. 인증 거부됨" });
   }
