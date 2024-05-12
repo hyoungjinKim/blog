@@ -14,6 +14,7 @@ import LoginModal from "./auth/LoginModal";
 import RegisterModal from "./auth/RegisterModal";
 import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT_REQUST } from "../redux/type";
+import SearchInput from "./search/searchInput";
 
 const AppNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ const AppNavbar = () => {
         {userRole === "MainJuin" ? (
           <Form className="col mt-2">
             <Link
-              to="post"
+              to="posts"
               className="btn btn-success block text-white px-3"
               onClick={addPostClick}
             >
@@ -55,10 +56,10 @@ const AppNavbar = () => {
           ""
         )}
       </NavItem>
-      <NavItem className="d-flex just-content-center">
+      <NavItem className="d-flex just-content-center ">
         <Form className="col mt-2" style={{ marginLeft: "10px" }}>
           {user && user.name ? (
-            <Link className="text-decoration-none" to="#">
+            <Link className="text-decoration-none" to="/user">
               <Button outline color="light" className="px-3" block>
                 <strong>{user ? `Welcome ${user.name}` : ""}</strong>
               </Button>
@@ -100,13 +101,14 @@ const AppNavbar = () => {
   return (
     <Fragment>
       <Navbar color="dark" dark expand="lg" className="sticky-top">
-        <Link to="/" className="text-white text-decoration-none">
-          <h5>Side Project's Blog</h5>
-        </Link>
         <Container>
+          <Link to="/" className="text-white text-decoration-none float-left">
+            Blog Project's
+          </Link>
           <NavbarToggler onClick={handleToggle} />
           <Collapse isOpen={isOpen} navbar>
-            <Nav className="d-flex ms-auto justify-content-around" navbar>
+            <SearchInput isOpen={isOpen} />
+            <Nav className="ml-auto d-felx justify-content-around" navbar>
               {isAuthenticated ? authLink : guestLink}
             </Nav>
           </Collapse>

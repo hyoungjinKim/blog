@@ -35,7 +35,7 @@ const PostCardOne = ({ posts }) => {
                       </span>
                     </CardTitle>
                     <Row>
-                      <Button color="primary" className="p-1 btn-block">
+                      <Button className="p-1 btn-block btn-success text-white ">
                         More
                         <Badge
                           color="light"

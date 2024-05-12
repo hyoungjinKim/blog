@@ -12,7 +12,7 @@ const Footer = () => {
       <Row>
         <Col>
           <p>
-            Copyright &copy;<span>{thisYear()}</span>
+            314Blog &copy;<span>{thisYear()}</span>
           </p>
         </Col>
       </Row>

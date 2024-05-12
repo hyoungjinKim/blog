@@ -39,6 +39,7 @@ const LoginModal = () => {
   };
 
   const onChange = (e) => {
+    console.log(e.target.value);
     setValues({
       ...form,
       [e.target.name]: e.target.value,

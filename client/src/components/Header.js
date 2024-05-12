@@ -6,8 +6,8 @@ const Header = () => {
     <div id="page-header" className="mb-3">
       <Row>
         <Col md="6" sm="auto" className="text-center m-auto">
-          <h1>Read Our Blog</h1>
-          <p>사이드 프로젝트 작업 블로그 입니다.</p>
+          <h1>Create Blog</h1>
+          <p>자신의 글을 작성해주세요</p>
         </Col>
       </Row>
     </div>
