@@ -17,6 +17,8 @@ import CategoryResult from "./normalRoute/PostWrite";
 import Profile from "./normalRoute/Profile";
 import Userinfo from "./normalRoute/Userinfo";
 import UserFallo from "./normalRoute/UserFallo";
+import { EditProtectedRoute } from "./protectedRoute/ProtectedRoute";
+import PostEdit from "./normalRoute/PostEdit";
 const MyRouter = () => (
   <Router>
     <Fragment>
@@ -32,6 +34,11 @@ const MyRouter = () => (
           <Route path="/search" exact component={Search} />
           <Route path="/user/follo" exact component={UserFallo} />
           <Route path="/search/:searchterm" exact component={Search} />
+          <EditProtectedRoute
+            path="/post/:id/edit"
+            exact
+            component={PostEdit}
+          />
           <Route
             path="/posts/category/:categoryName"
             exact

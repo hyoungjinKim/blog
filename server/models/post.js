@@ -17,7 +17,8 @@ const PostSchema = new mongoose.Schema({
   },
   fileUrl: {
     type: String,
-    default: "https://source.unsplash.com/random/301x201",
+    default:
+      "https://images.unsplash.com/photo-1473163928189-364b2c4e1135?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D",
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,7 +26,7 @@ const PostSchema = new mongoose.Schema({
   },
   date: {
     type: String,
-    default: moment().format("YYYY-MM-DD hh:mm"),
+    default: moment().format("YYYY-MM-DD HH:mm:ss"),
   },
   comments: [
     {

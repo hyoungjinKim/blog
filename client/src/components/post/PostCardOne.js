@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMouse } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 const PostCardOne = ({ posts }) => {
+  console.log(posts);
   return (
     <Fragment>
       {Array.isArray(posts) ? (
@@ -20,7 +21,7 @@ const PostCardOne = ({ posts }) => {
           return (
             <div key={_id} className="col-md-4">
               <Link
-                to={`posts/:${_id}`} ///post/:${_id}
+                to={`posts/${_id}`}
                 className="text-dark text-decoration-none"
               >
                 <Card className="mb-3">

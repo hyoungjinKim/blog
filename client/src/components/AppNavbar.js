@@ -37,18 +37,12 @@ const AppNavbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const addPostClick = () => {};
-
   const authLink = (
     <Fragment>
       <NavItem>
         {userRole === "MainJuin" ? (
           <Form className="col mt-2">
-            <Link
-              to="posts"
-              className="btn btn-success block text-white px-3"
-              onClick={addPostClick}
-            >
+            <Link to="/posts" className="btn btn-success block text-white px-3">
               Add Post
             </Link>
           </Form>
