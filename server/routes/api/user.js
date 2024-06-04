@@ -80,4 +80,15 @@ router.post("/", async (req, res) => {
   }
 });
 
+//@route POST api/user/:username/profile
+//@desc POST Edit Password
+//@access Private
+
+router.post("/:userName/profile", async (req, res) => {
+  try {
+    const {} = req.body;
+  } catch (err) {
+    console.log(err);
+  }
+});
 export default router;

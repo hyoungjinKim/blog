@@ -17,7 +17,7 @@ const PostCardOne = ({ posts }) => {
   return (
     <Fragment>
       {Array.isArray(posts) ? (
-        posts.map(({ _id, title, fileUrl, comments, views }) => {
+        posts.map(({ _id, title, fileUrl, comments, views, creator }) => {
           return (
             <div key={_id} className="col-md-4">
               <Link
@@ -30,14 +30,16 @@ const PostCardOne = ({ posts }) => {
                     <CardTitle className="text-truncate d-flex justify-content-between">
                       <span className="text-truncate">{title}</span>
                       <span>
-                        <FontAwesomeIcon icon={faMouse} />
+                        <span>{creator.name}</span>
                         &nbsp;&nbsp;
+                        <FontAwesomeIcon icon={faMouse} />
+                        &nbsp;
                         <span>{views}</span>
                       </span>
                     </CardTitle>
                     <Row>
                       <Button className="p-1 btn-block btn-success text-white ">
-                        More
+                        comments
                         <Badge
                           color="light"
                           className="text-dark"

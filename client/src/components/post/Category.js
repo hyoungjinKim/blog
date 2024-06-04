@@ -9,7 +9,7 @@ const Category = ({ posts }) => {
         posts.map(({ _id, categoryName, posts }) => (
           <div key={_id} className="mx-1 mt-1 my_category">
             <Link
-              to={`/post/category/${categoryName}`}
+              to={`/posts/category/${categoryName}`}
               className="text-dark text-decoration-none"
             >
               <span className="ml-1">

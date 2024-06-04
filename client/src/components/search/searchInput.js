@@ -2,8 +2,7 @@ import React, { useState, useRef, Fragment } from "react";
 import { Form, Input } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
-//import { SEARCH_REQUEST } from "../../redux/types";
+import { SEARCH_REQUEST } from "../../redux/type";
 
 const SearchInput = () => {
   const dispatch = useDispatch();
@@ -21,19 +20,27 @@ const SearchInput = () => {
     await e.preventDefault();
     const { searchBy } = form;
 
-    /*dispatch({
+    dispatch({
       type: SEARCH_REQUEST,
       payload: searchBy,
-    });*/
+    });
 
     console.log(searchBy, "Submit Body");
+    resetValue.current.value = "";
   };
+
+  const resetValue = useRef(null);
 
   return (
     <Fragment>
       <Form onSubmit={onSubmit} className="col mt-2">
         <Link to={"/search"}>
-          <Input name="searchBy" placeholder="제목 검색" />
+          <Input
+            name="searchBy"
+            onChange={onChange}
+            innerRef={resetValue}
+            placeholder="제목 검색"
+          />
         </Link>
       </Form>
     </Fragment>

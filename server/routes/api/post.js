@@ -43,11 +43,25 @@ const { AWS_KEY, AWS_PRIVATE_KEY } = config;
 //   }
 // });
 
-router.get("/", async (req, res) => {
-  const postFindResult = await Post.find();
-  const categoryFindResult = await Category.find();
-  const result = { postFindResult, categoryFindResult };
-  res.json(result);
+//@route GET api/post
+//@desc More Loading Post
+//@access public
+router.get("/skip/:skip", async (req, res) => {
+  try {
+    const postCount = await Post.countDocuments();
+
+    const postFindResult = await Post.find()
+      .populate("creator", "name")
+      .skip(Number(req.params.skip))
+      .limit(6)
+      .sort({ date: -1 });
+    const categoryFindResult = await Category.find();
+    const result = { postFindResult, categoryFindResult, postCount };
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+    res.json({ msg: "더 이상 포스트가 없습니다." });
+  }
 });
 
 router.post("/", auth, async (req, res, next) => {
@@ -228,6 +242,25 @@ router.post("/:id/edit", auth, async (req, res, next) => {
   } catch (err) {
     console.log(err);
     next(err);
+  }
+});
+
+router.get("/category/:categoryName", async (req, res, next) => {
+  try {
+    const result = await Category.findOne(
+      {
+        categoryName: {
+          $regex: req.params.categoryName,
+          $options: "i",
+        },
+      },
+      "posts"
+    ).populate({ path: "posts" });
+    console.log(result, "Category Find result");
+    res.json(result);
+  } catch (e) {
+    console.log(e);
+    next(e);
   }
 });
 

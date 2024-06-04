@@ -13,7 +13,7 @@ import PostCardList from "./normalRoute/PostCardList";
 import PostWrite from "./normalRoute/PostWrite";
 import PostDetail from "./normalRoute/PostDetail";
 import Search from "./normalRoute/Search";
-import CategoryResult from "./normalRoute/PostWrite";
+import CategoryResult from "./normalRoute/CategoryResult";
 import Profile from "./normalRoute/Profile";
 import Userinfo from "./normalRoute/Userinfo";
 import UserFallo from "./normalRoute/UserFallo";
@@ -33,7 +33,7 @@ const MyRouter = () => (
           <Route path="/user/info" exact component={Userinfo} />
           <Route path="/search" exact component={Search} />
           <Route path="/user/follo" exact component={UserFallo} />
-          <Route path="/search/:searchterm" exact component={Search} />
+          <Route path="/search/:searchTerm" exact component={Search} />
           <EditProtectedRoute
             path="/post/:id/edit"
             exact
