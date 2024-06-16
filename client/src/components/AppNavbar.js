@@ -36,7 +36,6 @@ const AppNavbar = () => {
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-
   const authLink = (
     <Fragment>
       <NavItem>
@@ -53,7 +52,10 @@ const AppNavbar = () => {
       <NavItem className="d-flex just-content-center ">
         <Form className="col mt-2" style={{ marginLeft: "10px" }}>
           {user && user.name ? (
-            <Link className="text-decoration-none" to="/user">
+            <Link
+              className="text-decoration-none"
+              to={`/user/${user._id}/profile`}
+            >
               <Button outline color="light" className="px-3" block>
                 <strong>{user ? `Welcome ${user.name}` : ""}</strong>
               </Button>

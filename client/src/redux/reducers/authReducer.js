@@ -14,6 +14,15 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   REGISTER_REQUST,
+  USER_NAME_EDIT_REQUEST,
+  USER_NAME_EDIT_SUCCESS,
+  USER_NAME_EDIT_FAILURE,
+  USER_EMAIL_EDIT_REQUEST,
+  USER_EMAIL_EDIT_SUCCESS,
+  USER_EMAIL_EDIT_FAILURE,
+  USER_PASSWORD_EDIT_REQUEST,
+  USER_PASSWORD_EDIT_SUCCESS,
+  USER_PASSWORD_EDIT_FAILURE,
 } from "../type";
 
 const initialState = {
@@ -116,6 +125,22 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
         isLoading: false,
         userRole: "",
+      };
+
+    case USER_NAME_EDIT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case USER_NAME_EDIT_SUCCESS:
+      return {
+        ...state,
+        userName: action.payload.name1,
+      };
+    case USER_NAME_EDIT_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;

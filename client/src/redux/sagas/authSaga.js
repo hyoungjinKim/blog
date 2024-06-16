@@ -16,6 +16,18 @@ import {
   CLEAR_ERROR_SUCCESS,
   CLEAR_ERROR_FAILURE,
   CLEAR_ERROR_REQUST,
+  USER_NAME_EDIT_REQUEST,
+  USER_NAME_EDIT_SUCCESS,
+  USER_NAME_EDIT_FAILURE,
+  USER_EMAIL_EDIT_REQUEST,
+  USER_EMAIL_EDIT_SUCCESS,
+  USER_EMAIL_EDIT_FAILURE,
+  USER_PASSWORD_EDIT_SUCCESS,
+  USER_PASSWORD_EDIT_FAILURE,
+  USER_PASSWORD_EDIT_REQUEST,
+  USER_DELETE_REQUEST,
+  USER_DELETE_FAILURE,
+  USER_DELETE_SUCCESS,
 } from "../type";
 
 //login
@@ -146,6 +158,135 @@ function* watchclearError() {
   yield takeEvery(CLEAR_ERROR_REQUST, clearError);
 }
 
+//USer edit name
+const usernameEditAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.post(`api/auth/username/${payload.id}`, payload, config);
+};
+
+function* usernameEdit(action) {
+  try {
+    const result = yield call(usernameEditAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_NAME_EDIT_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_NAME_EDIT_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchusernameEdit() {
+  yield takeEvery(USER_NAME_EDIT_REQUEST, usernameEdit);
+}
+
+//USer edit email
+const userEmailEditAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.post(`api/auth/useremail/${payload.id}`, payload, config);
+};
+
+function* userEmailEdit(action) {
+  try {
+    const result = yield call(userEmailEditAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_EMAIL_EDIT_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_EMAIL_EDIT_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchuserEmailEdit() {
+  yield takeEvery(USER_EMAIL_EDIT_REQUEST, userEmailEdit);
+}
+
+//USer edit password
+const userPasswordEditAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.post(`api/auth/userpassword/${payload.id}`, payload, config);
+};
+
+function* userPasswordEdit(action) {
+  try {
+    const result = yield call(userPasswordEditAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_PASSWORD_EDIT_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_PASSWORD_EDIT_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchuserPasswordEdit() {
+  yield takeEvery(USER_PASSWORD_EDIT_REQUEST, userPasswordEdit);
+}
+
+//USer delete
+const userDeleteAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.delete(`api/auth/${payload.id}`, config);
+};
+
+function* userDelete(action) {
+  try {
+    yield call(userDeleteAPI, action.payload);
+    yield put({
+      type: USER_DELETE_SUCCESS,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_DELETE_FAILURE,
+    });
+  }
+}
+
+function* watchuserDelete() {
+  yield takeEvery(USER_DELETE_REQUEST, userDelete);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchLoginUser),
@@ -153,5 +294,9 @@ export default function* authSaga() {
     fork(watchuserLoading),
     fork(watchregisterUser),
     fork(watchclearError),
+    fork(watchusernameEdit),
+    fork(watchuserEmailEdit),
+    fork(watchuserPasswordEdit),
+    fork(watchuserDelete),
   ]);
 }

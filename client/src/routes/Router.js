@@ -29,8 +29,8 @@ const MyRouter = () => (
           <Route path="/" exact component={PostCardList} />
           <Route path="/posts" exact component={PostWrite} />
           <Route path="/posts/:id" exact component={PostDetail} />
-          <Route path="/user" exact component={Profile} />
-          <Route path="/user/info" exact component={Userinfo} />
+          <Route path="/user/:info/profile" exact component={Profile} />
+          <Route path="/userinfo" exact component={Userinfo} />
           <Route path="/search" exact component={Search} />
           <Route path="/user/follo" exact component={UserFallo} />
           <Route path="/search/:searchTerm" exact component={Search} />

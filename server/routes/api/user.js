@@ -80,15 +80,22 @@ router.post("/", async (req, res) => {
   }
 });
 
-//@route POST api/user/:username/profile
-//@desc POST Edit Password
+//@route GET api/user/:userid/profile
+//@desc
 //@access Private
 
-router.post("/:userName/profile", async (req, res) => {
+router.get("/:userid/profile", async (req, res) => {
   try {
-    const {} = req.body;
+    const result = await User.findById(req.params.userid).populate({
+      path: "posts",
+      populate: {
+        path: "category",
+      },
+    });
+    res.json(result);
   } catch (err) {
-    console.log(err);
+    console.log(err, "err");
   }
 });
+
 export default router;

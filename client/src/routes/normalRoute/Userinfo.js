@@ -1,32 +1,73 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Button, Row, Input, Label } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 import profilImg from "../../assets/img/KakaoTalk_20240104_150512518.jpg";
+import {
+  USER_NAME_EDIT_REQUEST,
+  USER_EMAIL_EDIT_REQUEST,
+  USER_PASSWORD_EDIT_REQUEST,
+  USER_DELETE_REQUEST,
+} from "../../redux/type";
 
 const Userinfo = () => {
-  const [name, setName] = useState("김형진");
-  const [email, setEmail] = useState("test@test.com");
-  const [password, setPassword] = useState("1234");
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      setPassword(user.password);
+    }
+  }, [user]);
   const [nameToggle, setNameToggle] = useState(true);
   const [passwordToggle, setPasswordToggle] = useState(true);
   const [emailToggle, setEmailToggle] = useState(true);
 
   const onSubmitName = (event) => {
-    event.preventDefault(); // Form의 기본 동작 방지
+    event.preventDefault();
     setName(event.target.Name.value);
-    setNameToggle(true); // 이름 수정 모드 종료
+    setNameToggle(true);
+    const name1 = event.target.Name.value;
+    const token = localStorage.getItem("token");
+    const id = user._id;
+    const body = { name1, id, token };
+    dispatch({
+      type: USER_NAME_EDIT_REQUEST,
+      payload: body,
+    });
   };
 
   const onSubmitEmail = (event) => {
-    event.preventDefault(); // Form의 기본 동작 방지
+    event.preventDefault();
     setEmail(event.target.email.value);
-    setEmailToggle(true); // 이름 수정 모드 종료
+    setEmailToggle(true);
+    const email1 = event.target.email.value;
+    const token = localStorage.getItem("token");
+    const id = user._id;
+    const body = { email1, id, token };
+    dispatch({
+      type: USER_EMAIL_EDIT_REQUEST,
+      payload: body,
+    });
   };
 
   const onSubmitPassword = (event) => {
-    event.preventDefault(); // Form의 기본 동작 방지
+    event.preventDefault();
     setPassword(event.target.password.value);
-    setPasswordToggle(true); // 이름 수정 모드 종료
+    setPasswordToggle(true);
+    const password1 = event.target.password.value;
+    const token = localStorage.getItem("token");
+    const id = user._id;
+    const body = { password1, id, token };
+    dispatch({
+      type: USER_PASSWORD_EDIT_REQUEST,
+      payload: body,
+    });
   };
 
   const onChangenameToggle = () => {
@@ -41,11 +82,20 @@ const Userinfo = () => {
     setPasswordToggle(!passwordToggle);
   };
 
+  const Userdelete = () => {
+    const id = user._id;
+    const token = localStorage.getItem("token");
+    const body = { id, token };
+    dispatch({
+      type: USER_DELETE_REQUEST,
+      payload: body,
+    });
+  };
   const NameComponent = () => {
     if (nameToggle) {
       return (
         <Fragment>
-          <h1>{name || "김형진"}</h1>
+          <h1>{name}</h1>
           <Button
             color="success"
             outline
@@ -78,7 +128,7 @@ const Userinfo = () => {
     if (emailToggle) {
       return (
         <Fragment>
-          <Label for="email" className="mr-2">
+          <Label className="mr-2">
             <h3>이메일 변경</h3>
           </Label>
           <span className="ml-4">{email}</span>
@@ -118,7 +168,7 @@ const Userinfo = () => {
     if (passwordToggle) {
       return (
         <Fragment>
-          <Label for="email" className="mr-2">
+          <Label className="mr-2">
             <h3>비밀번호 변경</h3>
           </Label>
           <span className="ml-4">{password}</span>
@@ -193,7 +243,9 @@ const Userinfo = () => {
       </Row>
 
       <Row className="mb-5">
-        <Button color="danger">회원 탈퇴</Button>
+        <Button color="danger" onClick={Userdelete}>
+          회원 탈퇴
+        </Button>
       </Row>
     </Fragment>
   );

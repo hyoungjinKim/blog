@@ -17,6 +17,9 @@ import {
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
   SEARCH_FAILURE,
+  USER_PROFILE_LOADING_REQUEST,
+  USER_PROFILE_LOADING_SUCCESS,
+  USER_PROFILE_LOADING_FAILURE,
 } from "../type";
 
 const initialState = {
@@ -25,12 +28,11 @@ const initialState = {
   postDetail: "",
   postCount: "",
   loading: false,
-  error: "",
   creatorId: "",
   categoryFindResult: "",
-  title: "",
   searchBy: "",
   searchResult: "",
+  UserProfile: [],
 };
 
 export default function (state = initialState, action) {
@@ -147,6 +149,24 @@ export default function (state = initialState, action) {
       return {
         ...state,
         searchResult: action.payload,
+        loading: false,
+      };
+
+    case USER_PROFILE_LOADING_REQUEST:
+      return {
+        ...state,
+        posts: [],
+        loading: true,
+      };
+    case USER_PROFILE_LOADING_SUCCESS:
+      return {
+        ...state,
+        UserProfile: action.payload,
+        loading: false,
+      };
+    case USER_PROFILE_LOADING_FAILURE:
+      return {
+        ...state,
         loading: false,
       };
     default:

@@ -70,7 +70,6 @@ const PostCardList = () => {
 
     return [lastPostElementRef, visible];
   };
-
   const [lastPostElementRef, visible] = useOnScreen({
     threshold: "0.5",
   });

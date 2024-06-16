@@ -26,6 +26,9 @@ import {
   SEARCH_SUCCESS,
   SEARCH_FAILURE,
   SEARCH_REQUEST,
+  USER_PROFILE_LOADING_SUCCESS,
+  USER_PROFILE_LOADING_FAILURE,
+  USER_PROFILE_LOADING_REQUEST,
 } from "../type";
 
 //All Posts load
@@ -35,8 +38,8 @@ const loadPostAPI = (payload) => {
 
 function* loadPosts(action) {
   try {
+    console.log(action.payload);
     const result = yield call(loadPostAPI, action.payload);
-    console.log(result, "loadPosts");
     yield put({
       type: POST_LOADINGE_SUCCESS,
       payload: result.data,
@@ -205,7 +208,9 @@ const PostEditUploadAPI = (payload) => {
 
 function* PostEditUpload(action) {
   try {
+    console.log(action.payload);
     const result = yield call(PostEditUploadAPI, action.payload);
+    console.log(result);
     yield put({
       type: POST_EDIT_UPLOADING_SUCCESS,
       payload: result.data,
@@ -275,6 +280,31 @@ function* watchSearchResult() {
   yield takeEvery(SEARCH_REQUEST, SearchResult);
 }
 
+//Search Find
+const userProfileAPI = (payload) => {
+  return axios.get(`/api/user/${payload}/profile`);
+};
+
+function* userProfile(action) {
+  try {
+    const result = yield call(userProfileAPI, action.payload);
+    console.log(result);
+    yield put({
+      type: USER_PROFILE_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_PROFILE_LOADING_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchuserProfile() {
+  yield takeEvery(USER_PROFILE_LOADING_REQUEST, userProfile);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchLoadPosts),
@@ -285,5 +315,6 @@ export default function* postSaga() {
     fork(watchPostEditUpload),
     fork(watchCategoryFind),
     fork(watchSearchResult),
+    fork(watchuserProfile),
   ]);
 }

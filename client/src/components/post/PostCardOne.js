@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMouse } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 const PostCardOne = ({ posts }) => {
-  console.log(posts);
   return (
     <Fragment>
       {Array.isArray(posts) ? (

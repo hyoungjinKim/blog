@@ -13,7 +13,6 @@ import searchRoutes from "./routes/api/search";
 
 const app = express();
 const { MONGO_URI } = config;
-
 app.use(hpp());
 app.use(helmet());
 
@@ -24,10 +23,8 @@ app.use(express.json());
 
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => console.log("MongoDB connecting Success!!"))
+  .catch((e) => console.log(e));
 
 app.use("/api/post", postsRoutes);
 app.use("/api/user", userRoutes);

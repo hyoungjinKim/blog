@@ -24,7 +24,7 @@ const Category = ({ posts }) => {
           </div>
         ))
       ) : (
-        <div>1</div>
+        <div>작성된 카테고리가 없습니다.</div>
       )}
     </>
   );
