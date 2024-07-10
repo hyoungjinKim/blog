@@ -14,7 +14,6 @@ import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor"
 import { editorConfiguration } from "../../components/editor/editorConfig";
 import Myinit from "../../components/editor/UploadAdpter";
 import { POST_EDIT_UPLOADING_REQUEST } from "../../redux/type";
-
 const PostEdit = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { postDetail } = useSelector((state) => state.post);

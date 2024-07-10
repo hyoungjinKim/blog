@@ -6,54 +6,60 @@ import Comment from "../../models/comment";
 import auth from "../../middleware/auth";
 import config from "../../config/index";
 const router = express.Router();
-
-import multerS3 from "multer-s3";
-import path from "path";
-//import AWS from "aws-sdk";
 import multer from "multer";
 import moment from "moment";
+
+const { S3Client } = require("@aws-sdk/client-s3");
+const multerS3 = require("multer-s3");
+const path = require("path");
+
 const { AWS_KEY, AWS_PRIVATE_KEY } = config;
 
-// const s3 = new AWS.S3({
-//   accessKeyId: AWS_KEY,
-//   secretAccessKey: AWS_PRIVATE_KEY,
-// });
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: AWS_KEY,
+    secretAccessKey: AWS_PRIVATE_KEY,
+  },
+  region: "ap-northeast-2", // S3 버킷의 리전
+});
 
-// const uploadS3 = multer({
-//   storage: multerS3({
-//     s3,
-//     bucket: "sideproject1220/upload",
-//     region: "ap-northeast-2",
-//     key(req, file, cb) {
-//       const ext = path.extname(file.originalname);
-//       const basename = path.basename(file.originalname, ext);
-//       cb(null, basename + new Date().valueOf() + ext);
-//     },
-//   }),
-//   limits: { fileSize: 100 * 1024 * 1024 },
-// });
+const uploadS3 = multer({
+  storage: multerS3({
+    s3,
+    bucket: "sideproject1220",
+    acl: "public-read", // 업로드된 파일을 공개로 설정 (옵션)
+    key(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext);
+      cb(null, `${basename}-${Date.now()}${ext}`);
+    },
+  }),
+  limits: { fileSize: 100 * 1024 * 1024 }, // 파일 크기 제한
+});
 
-// router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => {
-//   try {
-//     res.json({ uploaded: true, url: req.files.map((v) => v.location) });
-//   } catch (e) {
-//     console.error(e);
-//     console.log("--------------------");
-//     res.json({ uploaded: false, url: null });
-//   }
-// });
+router.post("/image", uploadS3.single("upload"), async (req, res) => {
+  try {
+    console.log(req.file); // 여기에 undefined가 나오는지 확인
+    if (!req.file) {
+      return res.status(400).json({ uploaded: false, url: null });
+    }
+    const url = req.file.location;
+    res.json({ uploaded: true, url: [url] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ uploaded: false, url: null });
+  }
+});
 
-//@route GET api/post
-//@desc More Loading Post
-//@access public
+// @route GET api/post
+// @desc More Loading Post
+// @access public
 router.get("/skip/:skip", async (req, res) => {
   try {
     const postCount = await Post.countDocuments();
-
     const postFindResult = await Post.find()
       .populate("creator", "name")
-      .skip(Number(req.params.skip))
-      .limit(6)
+      .limit(Number(req.params.skip))
       .sort({ date: -1 });
     const categoryFindResult = await Category.find();
     const result = { postFindResult, categoryFindResult, postCount };
@@ -64,13 +70,13 @@ router.get("/skip/:skip", async (req, res) => {
   }
 });
 
-router.post("/", auth, async (req, res, next) => {
+router.post("/", auth, uploadS3.none(), async (req, res, next) => {
   try {
     console.log(2);
 
-    const { title, contents, fileUrl, creator, category } = req.body;
+    const { title, contents, fileUrl, category } = req.body;
     console.log(3);
-
+    console.log(fileUrl);
     const newPost = await Post.create({
       title,
       contents,

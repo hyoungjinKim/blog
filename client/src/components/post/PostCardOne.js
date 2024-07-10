@@ -20,7 +20,7 @@ const PostCardOne = ({ posts }) => {
           return (
             <div key={_id} className="col-md-4">
               <Link
-                to={`posts/${_id}`}
+                to={`/posts/${_id}`}
                 className="text-dark text-decoration-none"
               >
                 <Card className="mb-3">

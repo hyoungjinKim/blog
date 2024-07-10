@@ -7,7 +7,7 @@ import {
   USER_LOADING_REQUST,
 } from "../../redux/type";
 import { Button, Row, Col, Container } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import { GrowingSpinner } from "../../components/spinner/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +20,8 @@ import BalloonEditor from "@ckeditor/ckeditor5-editor-balloon/src/ballooneditor"
 import { editorConfiguration } from "../../components/editor/editorConfig";
 import Comments from "../../components/comments/Comments";
 
-const PostDetail = (req) => {
+const PostDetail = () => {
+  const { id } = useParams(); // useParams 훅을 사용하여 매개변수 id 읽어오기
   const dispatch = useDispatch();
   const { postDetail, creatorId, title, loading } = useSelector(
     (state) => state.post
@@ -29,21 +30,24 @@ const PostDetail = (req) => {
   const { comments } = useSelector((state) => state.comment);
 
   useEffect(() => {
-    dispatch({
-      type: POST_DETAIL_LOADING_REQUEST,
-      payload: req.match.params.id,
-    });
-    dispatch({
-      type: USER_LOADING_REQUST,
-      payload: localStorage.getItem("token"),
-    });
-  }, [dispatch, req.match.params.id]);
+    if (id) {
+      // id가 존재하는 경우에만 POST_DETAIL_LOADING_REQUEST와 USER_LOADING_REQUST dispatch
+      dispatch({
+        type: POST_DETAIL_LOADING_REQUEST,
+        payload: id, // id를 payload로 전달
+      });
+      dispatch({
+        type: USER_LOADING_REQUST,
+        payload: localStorage.getItem("token"),
+      });
+    }
+  }, [dispatch, id]);
 
   const onDeleteClick = () => {
     dispatch({
       type: POST_DELETE_REQUEST,
       payload: {
-        id: req.match.params.id,
+        id: id, // id를 payload로 전달
         token: localStorage.getItem("token"),
       },
     });
@@ -58,10 +62,7 @@ const PostDetail = (req) => {
           </Link>
         </Col>
         <Col className="col-md-3 mr-md-3">
-          <Link
-            to={`/post/${req.match.params.id}/edit`}
-            className="btn btn-success btn-block"
-          >
+          <Link to={`/post/${id}/edit`} className="btn btn-success btn-block">
             Edit Post
           </Link>
         </Col>
@@ -154,7 +155,7 @@ const PostDetail = (req) => {
                   )
                 : "No comments available"}
               <Comments
-                id={req.match.params.id}
+                id={id} // id를 Comments 컴포넌트로 전달
                 userId={userId}
                 userName={userName}
               />
@@ -169,7 +170,7 @@ const PostDetail = (req) => {
 
   return (
     <div>
-      <Helmet title={`Post|${title}`} />
+      <Helmet title={`Post | ${title}`} />
       {loading === true ? GrowingSpinner : Body}
     </div>
   );

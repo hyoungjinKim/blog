@@ -1,5 +1,7 @@
 import axios from "axios";
 import { call, all, put, takeEvery, fork } from "redux-saga/effects";
+import { push } from "react-router-redux";
+
 import {
   LOGIN_FAILURE,
   LOGIN_REQUST,
@@ -28,6 +30,12 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_FAILURE,
   USER_DELETE_SUCCESS,
+  USER_PROFILEURL_EDIT_REQUEST,
+  USER_PROFILEURL_EDIT_SUCCESS,
+  USER_PROFILEURL_EDIT_FAILURE,
+  USER_PROFILEURL_DELETE_SUCCESS,
+  USER_PROFILEURL_DELETE_FAILURE,
+  USER_PROFILEURL_DELETE_REQUEST,
 } from "../type";
 
 //login
@@ -67,6 +75,7 @@ function* logout() {
     yield put({
       type: LOGOUT_SUCCESS,
     });
+    yield put(push("/"));
   } catch (err) {
     yield put({
       type: LOGOUT_FAILURE,
@@ -257,6 +266,70 @@ function* watchuserPasswordEdit() {
   yield takeEvery(USER_PASSWORD_EDIT_REQUEST, userPasswordEdit);
 }
 
+//USer edit profile_Url
+const userProfileUrlAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.post(`api/user/userImg/${payload.id}`, payload, config);
+};
+
+function* userProfileUrl(action) {
+  try {
+    const result = yield call(userProfileUrlAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_PROFILEURL_EDIT_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_PROFILEURL_EDIT_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchuserProfileUrl() {
+  yield takeEvery(USER_PROFILEURL_EDIT_REQUEST, userProfileUrl);
+}
+
+//USer delete profile_Url
+const userProfiledeleteAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (payload.token) {
+    config.headers["x-auth-token"] = payload.token;
+  }
+  return axios.post(`api/user/proflieDelete/${payload.id}`, payload, config);
+};
+
+function* userProfiledelete(action) {
+  try {
+    const result = yield call(userProfiledeleteAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_PROFILEURL_DELETE_SUCCESS,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_PROFILEURL_DELETE_FAILURE,
+    });
+  }
+}
+
+function* watchuserProfiledelete() {
+  yield takeEvery(USER_PROFILEURL_DELETE_REQUEST, userProfiledelete);
+}
+
 //USer delete
 const userDeleteAPI = (payload) => {
   const config = {
@@ -298,5 +371,7 @@ export default function* authSaga() {
     fork(watchuserEmailEdit),
     fork(watchuserPasswordEdit),
     fork(watchuserDelete),
+    fork(watchuserProfileUrl),
+    fork(watchuserProfiledelete),
   ]);
 }

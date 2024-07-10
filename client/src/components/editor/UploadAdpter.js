@@ -97,7 +97,6 @@ class MyUploadAdapter {
     // the CSRF token generated earlier by your application.
 
     // Send the request.
-    console.log("11");
     this.xhr.send(data);
   }
 }

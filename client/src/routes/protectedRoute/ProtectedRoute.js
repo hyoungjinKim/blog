@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useSelector } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 
 export const EditProtectedRoute = ({ component: Component, ...rest }) => {
   const { userId } = useSelector((state) => state.auth);
@@ -14,7 +14,7 @@ export const EditProtectedRoute = ({ component: Component, ...rest }) => {
           return <Component {...props} />;
         } else {
           return (
-            <Redirect
+            <Navigate
               to={{
                 pathname: "/",
                 state: {

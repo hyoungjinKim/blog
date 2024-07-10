@@ -17,40 +17,47 @@ const PostCardList = () => {
     (state) => state.post
   );
   const dispatch = useDispatch();
-
+  const skipNumber = 6;
   useEffect(() => {
     dispatch({
       type: POST_LOADING_REQUST,
-      payload: 0,
+      payload: skipNumber,
     });
   }, [dispatch]);
 
-  const skipNumberRef = useRef(0);
+  const skipNumberRef = useRef(skipNumber);
   const postCountRef = useRef(0);
   const endMsg = useRef(false);
 
-  postCountRef.current = postCount - 6;
+  postCountRef.current = postCount - skipNumber;
 
   const useOnScreen = (options) => {
     const lastPostElementRef = useRef();
 
     const [visible, setVisible] = useState(false);
-
+    const [poststate, setPoststate] = useState(false);
     useEffect(() => {
       const observer = new IntersectionObserver(([entry]) => {
         setVisible(entry.isIntersecting);
 
         if (entry.isIntersecting) {
           let remainPostCount = postCountRef.current - skipNumberRef.current;
-          if (remainPostCount >= 0) {
-            dispatch({
-              type: POST_LOADING_REQUST,
-              payload: skipNumberRef.current + 6,
-            });
-            skipNumberRef.current += 6;
+          if (remainPostCount >= 0 && !loading) {
+            if (remainPostCount < skipNumber && !poststate) {
+              dispatch({
+                type: POST_LOADING_REQUST,
+                payload: Number(postCount),
+              });
+              setPoststate(true);
+            } else if (!poststate && !loading) {
+              dispatch({
+                type: POST_LOADING_REQUST,
+                payload: skipNumberRef.current + skipNumber,
+              });
+              skipNumberRef.current += skipNumber;
+            }
           } else {
             endMsg.current = true;
-            console.log(endMsg.current);
           }
         }
       }, options);
@@ -71,9 +78,8 @@ const PostCardList = () => {
     return [lastPostElementRef, visible];
   };
   const [lastPostElementRef, visible] = useOnScreen({
-    threshold: "0.5",
+    threshold: "1",
   });
-  console.log(visible, "visible", skipNumberRef.current, "skipNum");
   return (
     <Fragment>
       <Helmet title="Home" />

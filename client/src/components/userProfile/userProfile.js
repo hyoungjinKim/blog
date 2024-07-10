@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Button, Row } from "reactstrap";
+import { FigureImage } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +13,15 @@ const UserPost = ({ posts }) => {
               return (
                 <div key={_id}>
                   <Link to={`/posts/${_id}`} className="text-decoration-none">
-                    <img src={fileUrl} alt="content" />
+                    <FigureImage
+                      src={fileUrl}
+                      alt="content"
+                      style={{
+                        width: 450,
+                        height: 450,
+                        objectFit: "scale-down",
+                      }}
+                    />
                     <p />
                     <h1 style={{ color: "black" }}>
                       <b>#{title}</b>

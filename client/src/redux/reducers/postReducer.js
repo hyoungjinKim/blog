@@ -20,6 +20,9 @@ import {
   USER_PROFILE_LOADING_REQUEST,
   USER_PROFILE_LOADING_SUCCESS,
   USER_PROFILE_LOADING_FAILURE,
+  USER_PROFILE_SEARCH_REQUEST,
+  USER_PROFILE_SEARCH_SUCCESS,
+  USER_PROFILE_SEARCH_FAILURE,
 } from "../type";
 
 const initialState = {
@@ -165,6 +168,24 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case USER_PROFILE_LOADING_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+
+    case USER_PROFILE_SEARCH_REQUEST:
+      return {
+        ...state,
+        posts: [],
+        loading: true,
+      };
+    case USER_PROFILE_SEARCH_SUCCESS:
+      return {
+        ...state,
+        UserProfile: action.payload,
+        loading: false,
+      };
+    case USER_PROFILE_SEARCH_FAILURE:
       return {
         ...state,
         loading: false,

@@ -25,6 +25,11 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: moment().format("YYYY-MM-DD hh:mm"),
   },
+  profile_imgUrl: {
+    type: String,
+    default:
+      "https://w7.pngwing.com/pngs/710/71/png-transparent-profle-person-profile-user-circle-icons-icon-thumbnail.png",
+  },
   comments: [
     {
       post_id: {

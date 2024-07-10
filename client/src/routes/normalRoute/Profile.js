@@ -2,8 +2,10 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Row, Col, Container, Input, Form } from "reactstrap";
 import { Link } from "react-router-dom";
-import profilImg from "../../assets/img/KakaoTalk_20240104_150512518.jpg";
-import { USER_PROFILE_LOADING_REQUEST } from "../../redux/type";
+import {
+  USER_PROFILE_LOADING_REQUEST,
+  USER_PROFILE_SEARCH_REQUEST,
+} from "../../redux/type";
 import UserPost from "../../components/userProfile/userProfile";
 const Profile = (req) => {
   const dispatch = useDispatch();
@@ -16,6 +18,18 @@ const Profile = (req) => {
     });
   }, [dispatch]);
   console.log(UserProfile);
+
+  const onSearchSumbmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.Mysearch.value);
+    const id = UserProfile._id;
+    const title = e.target.Mysearch.value;
+    let body = { id, title };
+    dispatch({
+      type: USER_PROFILE_SEARCH_REQUEST,
+      payload: body,
+    });
+  };
   return (
     <Fragment>
       <Row
@@ -28,7 +42,7 @@ const Profile = (req) => {
       >
         <img
           className="rounded-circle"
-          src={profilImg}
+          src={UserProfile.profile_imgUrl}
           style={{ width: "10rem", height: "10rem", marginLeft: "5em" }}
         />
         <div className="ml-5">
@@ -46,27 +60,14 @@ const Profile = (req) => {
       <Row className="d-flex justify-content-end mb-3">
         <Col xs="12" md="4">
           {" "}
-          {/* Changed here */}
           <Row style={{ display: "flex", flexDirection: "column" }}>
-            <div>
-              <Link
-                to={"user/follo"}
-                style={{ color: "black" }}
-                className="text-decoration-none"
-              >
-                <span>1 팔로워</span>
-              </Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <Link
-                to={"user/follo"}
-                style={{ color: "black" }}
-                className="text-decoration-none"
-              >
-                <span>1 팔로잉</span>
-              </Link>
-            </div>
-            <Form>
-              <Input bssize="sm" className="mt-2" placeholder="제목 검색" />
+            <Form onSubmit={onSearchSumbmit}>
+              <Input
+                bssize="sm"
+                className="mt-2"
+                placeholder="제목 검색"
+                name="Mysearch"
+              />
             </Form>
           </Row>
         </Col>

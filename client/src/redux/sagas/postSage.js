@@ -1,6 +1,13 @@
 import axios from "axios";
-import { fork, takeEvery, call, put, all } from "redux-saga/effects";
-import { push } from "connected-react-router";
+import {
+  fork,
+  takeEvery,
+  call,
+  put,
+  all,
+  takeLatest,
+} from "redux-saga/effects";
+import { push } from "react-router-redux";
 import {
   POST_LOADINGE_SUCCESS,
   POST_LOADING_FAILURE,
@@ -29,16 +36,18 @@ import {
   USER_PROFILE_LOADING_SUCCESS,
   USER_PROFILE_LOADING_FAILURE,
   USER_PROFILE_LOADING_REQUEST,
+  USER_PROFILE_SEARCH_SUCCESS,
+  USER_PROFILE_SEARCH_FAILURE,
+  USER_PROFILE_SEARCH_REQUEST,
 } from "../type";
 
 //All Posts load
 const loadPostAPI = (payload) => {
-  return axios.get(`api/post/skip/${payload}`);
+  return axios.get(`/api/post/skip/${payload}`);
 };
 
 function* loadPosts(action) {
   try {
-    console.log(action.payload);
     const result = yield call(loadPostAPI, action.payload);
     yield put({
       type: POST_LOADINGE_SUCCESS,
@@ -67,7 +76,7 @@ const uploadPostAPI = (payload) => {
   if (token) {
     config.headers["x-auth-token"] = token;
   }
-  return axios.post("api/post", payload, config);
+  return axios.post("/api/post", payload, config);
 };
 
 function* uploadPosts(action) {
@@ -95,7 +104,7 @@ function* watchuploadPosts() {
 
 //Post Detail
 const loadPostDetailAPI = (payload) => {
-  return axios.get(`api/post/${payload}`);
+  return axios.get(`/api/post/${payload}`);
 };
 
 function* loadPostDetail(action) {
@@ -256,18 +265,18 @@ function* watchCategoryFind() {
 
 //Search Find
 const SearchResultAPI = (payload) => {
-  console.log(payload);
   return axios.get(`/api/search/${encodeURIComponent(payload)}`);
 };
 
 function* SearchResult(action) {
   try {
     const result = yield call(SearchResultAPI, action.payload);
+    console.log(action.payload);
     yield put({
       type: SEARCH_SUCCESS,
       payload: result.data,
     });
-    yield put(push(`/api/search/${encodeURIComponent(action.payload)}`));
+    yield put(push(`/search/${encodeURIComponent(action.payload)}`));
   } catch (e) {
     yield put({
       type: SEARCH_FAILURE,
@@ -277,10 +286,10 @@ function* SearchResult(action) {
 }
 
 function* watchSearchResult() {
-  yield takeEvery(SEARCH_REQUEST, SearchResult);
+  yield takeLatest(SEARCH_REQUEST, SearchResult);
 }
 
-//Search Find
+//User Profile
 const userProfileAPI = (payload) => {
   return axios.get(`/api/user/${payload}/profile`);
 };
@@ -288,7 +297,6 @@ const userProfileAPI = (payload) => {
 function* userProfile(action) {
   try {
     const result = yield call(userProfileAPI, action.payload);
-    console.log(result);
     yield put({
       type: USER_PROFILE_LOADING_SUCCESS,
       payload: result.data,
@@ -305,6 +313,31 @@ function* watchuserProfile() {
   yield takeEvery(USER_PROFILE_LOADING_REQUEST, userProfile);
 }
 
+//User Profile
+const userProfileSearchAPI = (payload) => {
+  return axios.get(`/api/search/${payload.id}/${payload.title}/profile`);
+};
+
+function* userProfileSearch(action) {
+  try {
+    const result = yield call(userProfileSearchAPI, action.payload);
+    console.log(result.data);
+    yield put({
+      type: USER_PROFILE_SEARCH_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: USER_PROFILE_SEARCH_FAILURE,
+      payload: e,
+    });
+  }
+}
+
+function* watchuserProfileSearch() {
+  yield takeEvery(USER_PROFILE_SEARCH_REQUEST, userProfileSearch);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchLoadPosts),
@@ -316,5 +349,6 @@ export default function* postSaga() {
     fork(watchCategoryFind),
     fork(watchSearchResult),
     fork(watchuserProfile),
+    fork(watchuserProfileSearch),
   ]);
 }
