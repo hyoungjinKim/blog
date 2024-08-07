@@ -216,7 +216,6 @@ const userEmailEditAPI = (payload) => {
 function* userEmailEdit(action) {
   try {
     const result = yield call(userEmailEditAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: USER_EMAIL_EDIT_SUCCESS,
       payload: result.data,
