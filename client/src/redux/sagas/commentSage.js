@@ -19,7 +19,6 @@ const loadCommentsAPI = (payload) => {
 function* loadComments(action) {
   try {
     const result = yield call(loadCommentsAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: COMMENT_LOADING_SUCCESS,
       payload: result.data,
