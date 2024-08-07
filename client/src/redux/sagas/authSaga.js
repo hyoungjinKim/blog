@@ -315,7 +315,6 @@ const userProfiledeleteAPI = (payload) => {
 function* userProfiledelete(action) {
   try {
     const result = yield call(userProfiledeleteAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: USER_PROFILEURL_DELETE_SUCCESS,
     });
