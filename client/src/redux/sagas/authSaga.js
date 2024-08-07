@@ -101,7 +101,6 @@ const registerUserAPI = (req) => {
 function* registerUser(action) {
   try {
     const result = yield call(registerUserAPI, action.payload);
-    console.log(result, "RegisterUser Data");
     yield put({
       type: REGISTER_SUCCESS,
       payload: result.data,
