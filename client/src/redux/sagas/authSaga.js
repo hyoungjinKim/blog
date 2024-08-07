@@ -282,7 +282,6 @@ const userProfileUrlAPI = (payload) => {
 function* userProfileUrl(action) {
   try {
     const result = yield call(userProfileUrlAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: USER_PROFILEURL_EDIT_SUCCESS,
       payload: result.data,
