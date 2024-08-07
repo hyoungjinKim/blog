@@ -183,7 +183,6 @@ const usernameEditAPI = (payload) => {
 function* usernameEdit(action) {
   try {
     const result = yield call(usernameEditAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: USER_NAME_EDIT_SUCCESS,
       payload: result.data,
