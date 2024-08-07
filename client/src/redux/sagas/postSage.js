@@ -321,7 +321,6 @@ const userProfileSearchAPI = (payload) => {
 function* userProfileSearch(action) {
   try {
     const result = yield call(userProfileSearchAPI, action.payload);
-    console.log(result.data);
     yield put({
       type: USER_PROFILE_SEARCH_SUCCESS,
       payload: result.data,
