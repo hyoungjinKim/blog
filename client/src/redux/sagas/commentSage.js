@@ -39,7 +39,6 @@ function* watchLoadComments() {
 
 //UPload Comment
 const UploadCommentsAPI = (payload) => {
-  console.log(payload.id, "UploadCommnetAPI ID");
   return axios.post(`api/post/${payload.id}/comments`, payload);
 };
 
