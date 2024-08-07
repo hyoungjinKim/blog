@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { POST_LOADING_REQUST } from "../../redux/type";
 import { Helmet } from "react-helmet";
@@ -96,7 +90,7 @@ const PostCardList = () => {
       ) : endMsg ? (
         <div>
           <Alert color="danger" className="text-center font-weight-bolder">
-            더 이상의 포스트는 없습니다
+            더 이상의 포스트는 없습니다.
           </Alert>
         </div>
       ) : (

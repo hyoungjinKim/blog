@@ -43,7 +43,7 @@ const Userinfo = () => {
       setPassword(user.password);
       setProfileUrl(user.profile_imgUrl);
     }
-  }, [user]);
+  }, [user, useState]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
