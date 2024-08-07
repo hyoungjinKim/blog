@@ -271,7 +271,6 @@ const SearchResultAPI = (payload) => {
 function* SearchResult(action) {
   try {
     const result = yield call(SearchResultAPI, action.payload);
-    console.log(action.payload);
     yield put({
       type: SEARCH_SUCCESS,
       payload: result.data,
