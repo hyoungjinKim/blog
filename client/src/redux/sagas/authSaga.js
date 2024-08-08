@@ -40,7 +40,6 @@ import {
 
 //login
 const loginUserAPI = (loginData) => {
-  console.log(loginData, "loginData");
   const config = {
     headers: {
       "Content-Type": "application/json",
