@@ -174,7 +174,7 @@ const PostEditLoadAPI = (payload) => {
   if (token) {
     config.headers["x-auth-token"] = token;
   }
-  console.log(payload.id);
+
   console.log(config);
   return axios.get(`/api/post/${payload.id}/edit`, config);
 };
