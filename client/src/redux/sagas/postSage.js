@@ -239,7 +239,6 @@ function* watchPostEditUpload() {
 
 //Category Find
 const CategoryFindAPI = (payload) => {
-  console.log(payload);
   return axios.get(`/api/post/category/${encodeURIComponent(payload)}`);
 };
 
