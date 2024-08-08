@@ -217,7 +217,6 @@ const PostEditUploadAPI = (payload) => {
 
 function* PostEditUpload(action) {
   try {
-    console.log(action.payload);
     const result = yield call(PostEditUploadAPI, action.payload);
     console.log(result);
     yield put({
