@@ -78,7 +78,6 @@ function* logout() {
     yield put({
       type: LOGOUT_FAILURE,
     });
-    console.log(err);
   }
 }
 
